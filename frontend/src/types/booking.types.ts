@@ -1,3 +1,5 @@
+import type { User } from './user.types'
+
 export interface Booking {
   id: string
   description: string
@@ -5,4 +7,5 @@ export interface Booking {
   start_time: string
   end_time: string
   user_id: string
+  user?: User
 }

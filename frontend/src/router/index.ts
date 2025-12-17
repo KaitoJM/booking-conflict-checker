@@ -6,6 +6,7 @@ import LoginView from '@/views/LoginView.vue'
 import GateLayout from '@/layouts/GateLayout.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import { useAuthStore } from '@/stores/auth.store'
+import AdminBookingsView from '@/views/admin/AdminBookingsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,8 +44,9 @@ const router = createRouter({
       meta: { requiresAuth: true },
       component: AdminLayout,
       children: [
-        { path: '', name: 'admin', component: HomeView },
-        { path: 'bookings', component: HomeView },
+        { path: '', name: 'admin', component: AdminBookingsView },
+        { path: 'bookings', name: 'adminBookings', component: AdminBookingsView },
+        { path: 'users', name: 'adminUsers', component: AdminBookingsView },
       ],
     },
   ],
