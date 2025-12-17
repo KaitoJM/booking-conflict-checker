@@ -22,7 +22,8 @@ class GetBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search' => 'nullable|string',
+            'date' => 'nullable|date'
         ];
     }
 }

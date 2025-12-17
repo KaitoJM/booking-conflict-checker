@@ -38,6 +38,7 @@ class BookingController extends Controller
 
         $bookings = $this->booking_service->getBookings(
             $request->query('search'),
+            $request->query('date'),
             $user->role == 'admin' ? null : $user->id
         );
 
@@ -53,6 +54,7 @@ class BookingController extends Controller
 
         $booking = $this->booking_service->createBooking(
             $user->id,
+            $request->description,
             $request->date,
             $request->start_time,
             $request->end_time
@@ -118,7 +120,7 @@ class BookingController extends Controller
 
     public function conflictReport(ConflictReportRequest $request)
     {
-        $bookings = $this->booking_service->getBookings($request->date);
+        $bookings = $this->booking_service->getBookings(null, $request->date);
 
         $report = $this->booking_conflict_service->analyze(
             $bookings,

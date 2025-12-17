@@ -22,6 +22,7 @@ class UpdateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'description' => 'nullable',
             'date' => 'nullable|date',
             'start_time' => 'nullable|time',
             'end_time' => 'nullable|time',

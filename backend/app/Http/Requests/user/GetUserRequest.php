@@ -23,6 +23,7 @@ class GetUserRequest extends FormRequest
     {
         return [
             'search' => 'nullable|string',
+            'date' => 'nullable|string',
             'user_id' => 'nullable|string'
         ];
     }

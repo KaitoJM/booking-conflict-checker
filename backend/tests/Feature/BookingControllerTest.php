@@ -41,6 +41,7 @@ describe('Store booking', function() {
         $user = User::factory()->create(['role' => 'user']);
 
         $response = actingAs($user)->postJson('/api/bookings', [
+            'description' => 'test-description',
             'date' => '2025-12-17',
             'start_time' => '01:00:00',
             'end_time' => '02:00:00',
@@ -49,6 +50,7 @@ describe('Store booking', function() {
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'user_id' => $user->id,
+            'description' => 'test-description',
             'date' => '2025-12-17',
             'start_time' => '01:00:00',
             'end_time' => '02:00:00',
