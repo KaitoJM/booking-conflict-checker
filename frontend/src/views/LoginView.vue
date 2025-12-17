@@ -7,7 +7,12 @@
           <UInput v-model="email" class="w-full" placeholder="Enter your email" />
         </UFormField>
         <UFormField label="Password">
-          <UInput v-model="password" class="w-full" placeholder="Enter your password" />
+          <UInput
+            v-model="password"
+            type="password"
+            class="w-full"
+            placeholder="Enter your password"
+          />
         </UFormField>
         <UButton type="submit" :loading="loading" class="flex justify-center mt-2">Login</UButton>
         <USeparator class="my-4" />

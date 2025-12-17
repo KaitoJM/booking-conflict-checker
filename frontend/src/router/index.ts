@@ -30,15 +30,13 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'login',
       component: GateLayout,
-      children: [{ path: '', component: LoginView }],
+      children: [{ path: '', name: 'login', component: LoginView }],
     },
     {
       path: '/register',
-      name: 'register',
       component: GateLayout,
-      children: [{ path: '', component: RegisterView }],
+      children: [{ path: '', name: 'register', component: RegisterView }],
     },
     {
       path: '/admin/',

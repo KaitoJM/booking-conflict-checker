@@ -6,7 +6,6 @@ import BookingHistory from '@/components/BookingHistory.vue'
 <template>
   <UPage class="max-w-250 mx-auto">
     <UPageBody>
-      sdfhkdjfhdkjfh
       <div class="flex gap-8">
         <div class="w-80">
           <BookingForm />
