@@ -42,16 +42,16 @@ describe('Store booking', function() {
 
         $response = actingAs($user)->postJson('/api/bookings', [
             'date' => '2025-12-17',
-            'start_time' => '01:00',
-            'end_time' => '02:00',
+            'start_time' => '01:00:00',
+            'end_time' => '02:00:00',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
             'user_id' => $user->id,
             'date' => '2025-12-17',
-            'start_time' => '01:00',
-            'end_time' => '02:00',
+            'start_time' => '01:00:00',
+            'end_time' => '02:00:00',
         ]);
     });
 

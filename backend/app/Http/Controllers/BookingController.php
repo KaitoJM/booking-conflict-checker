@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\booking\ConflictReportRequest;
 use App\Http\Requests\booking\CreateBookingRequest;
 use App\Http\Requests\booking\GetBookingRequest;
 use App\Http\Requests\booking\UpdateBookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\UserResource;
+use App\Services\BookingConflictService;
 use App\Services\BookingService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -16,10 +18,15 @@ use Illuminate\Support\Facades\Gate;
 class BookingController extends Controller
 {
     protected BookingService $booking_service;
+    protected BookingConflictService $booking_conflict_service;
 
-    public function __construct(BookingService $booking_service)
+    public function __construct(
+        BookingService $booking_service,
+        BookingConflictService $booking_conflict_service
+    )
     {
         $this->booking_service = $booking_service;
+        $this->booking_conflict_service = $booking_conflict_service;
     }
 
     /**
@@ -107,5 +114,19 @@ class BookingController extends Controller
         }
 
         return response()->json(null, 204);
+    }
+
+    public function conflictReport(ConflictReportRequest $request)
+    {
+        $bookings = $this->booking_service->getBookings($request->date);
+
+        $report = $this->booking_conflict_service->analyze(
+            $bookings,
+            $request->date,
+            $request->start_time,
+            $request->end_time
+        );
+
+        return response()->json($report);
     }
 }

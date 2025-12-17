@@ -4,7 +4,7 @@ namespace App\Http\Requests\booking;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateBookingRequest extends FormRequest
+class ConflictReportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
