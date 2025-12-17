@@ -9,7 +9,7 @@ export const useBookingStore = defineStore('bookingStore', () => {
   const authStore = useAuthStore()
   const bookings = ref<Booking[]>([])
 
-  const getBookings = async () => {
+  const getBookings = async (search: string | null = null, date: string | null = null) => {
     try {
       const res = await $fetch<ApiSuccess<Booking[]>>(`${import.meta.env.VITE_API_URL}/bookings`, {
         method: 'GET',
@@ -17,6 +17,7 @@ export const useBookingStore = defineStore('bookingStore', () => {
           Authorization: `Bearer ${authStore.token}`,
           Accept: 'application/json',
         },
+        params: { search, date },
       })
       bookings.value = res.data
     } catch (error) {
@@ -30,11 +31,16 @@ export const useBookingStore = defineStore('bookingStore', () => {
     }
   }
 
-  const createBooking = async (date: string, start_time: string, end_time: string) => {
+  const createBooking = async (
+    description: string,
+    date: string,
+    start_time: string,
+    end_time: string,
+  ) => {
     try {
       const res = await $fetch<ApiSuccess<Booking>>(`${import.meta.env.VITE_API_URL}/bookings`, {
         method: 'POST',
-        body: { date, start_time, end_time },
+        body: { description, date, start_time, end_time },
         headers: {
           Authorization: `Bearer ${authStore.token}`,
           Accept: 'application/json',
@@ -51,5 +57,29 @@ export const useBookingStore = defineStore('bookingStore', () => {
       } as ApiError
     }
   }
-  return { bookings, getBookings, createBooking }
+
+  const deleteBooking = async (id: string) => {
+    try {
+      const res = await $fetch<ApiSuccess<Booking>>(
+        `${import.meta.env.VITE_API_URL}/bookings/${id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${authStore.token}`,
+            Accept: 'application/json',
+          },
+        },
+      )
+      getBookings()
+    } catch (error) {
+      const err = error as FetchError<any>
+
+      throw {
+        message: err.data?.message ?? 'Booking deletion failed',
+        errors: err.data?.errors,
+        statusCode: err.status,
+      } as ApiError
+    }
+  }
+  return { bookings, getBookings, createBooking, deleteBooking }
 })

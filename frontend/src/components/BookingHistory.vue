@@ -1,13 +1,26 @@
 <template>
-  <p class="font-bold text-sm mb-2 text-neutral-400">Booking History</p>
-  <UTable :data="data" :columns="columns" class="flex-1" />
+  <p class="font-bold text-sm mb-4 text-neutral-400">Booking History</p>
+  <BookingFilter class="mb-4" />
+  <UEmpty
+    v-if="!data.length"
+    class="min-h-100"
+    icon="i-lucide-calendar"
+    title="No Bookings yet"
+    description="It looks like you haven't added any bookings. Add new one to get started."
+  />
+  <UTable v-else :data="data" :columns="columns" class="flex-1" />
 </template>
 
 <script setup lang="ts">
+import type { FetchError } from 'ofetch'
 import { computed, h, onMounted, ref, resolveComponent } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
 import type { Booking } from '@/types/booking.types'
 import { useBookingStore } from '@/stores/booking.store'
+import { useOverlay } from '@nuxt/ui/runtime/composables/useOverlay.js'
+import ConfirmationDialog from './ConfirmationDialog.vue'
+import { useToast } from '@nuxt/ui/runtime/composables/useToast.js'
+import BookingFilter from './BookingFilter.vue'
 
 const bookingStore = useBookingStore()
 
@@ -17,6 +30,8 @@ onMounted(() => {
   bookingStore.getBookings()
 })
 
+const UButton = resolveComponent('UButton')
+const UIcon = resolveComponent('UIcon')
 const columns: TableColumn<Booking>[] = [
   {
     accessorKey: 'id',
@@ -24,40 +39,116 @@ const columns: TableColumn<Booking>[] = [
     cell: ({ row }) => `#${row.getValue('id')}`,
   },
   {
-    accessorKey: 'date',
-    header: 'Date',
+    accessorKey: 'description',
+    header: 'Booking',
     cell: ({ row }) => {
-      return new Date(row.getValue('date')).toLocaleString('en-US', {
+      return row.getValue('description')
+    },
+  },
+  {
+    accessorKey: 'date',
+    header: 'Schedule',
+    cell: ({ row }) => {
+      const BookingDate = new Date(row.getValue('date')).toLocaleString('en-US', {
         day: 'numeric',
         month: 'short',
       })
-    },
-  },
-  {
-    accessorKey: 'start_time',
-    header: 'Start Time',
-    cell: ({ row }) => {
-      const time = row.getValue('start_time') // "HH:mm:ss"
-      const dateObj = new Date(`1970-01-01T${time}`) // combine with arbitrary date
-      return dateObj.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true, // this makes AM/PM
-      })
-    },
-  },
-  {
-    accessorKey: 'end_time',
-    header: 'End Time',
-    cell: ({ row }) => {
-      const time = row.getValue('end_time')
-      const dateObj = new Date(`1970-01-01T${time}`)
-      return dateObj.toLocaleTimeString('en-US', {
+
+      const startTime = row.original.start_time
+      const startDateObj = new Date(`1970-01-01T${startTime}`)
+      const startDate = startDateObj.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true,
       })
+
+      const endTime = row.original.end_time
+      const endDateObj = new Date(`1970-01-01T${endTime}`)
+      const endDate = endDateObj.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      })
+      return h('div', { class: 'flex items-start gap-2' }, [
+        h(UIcon, {
+          class: 'size-5',
+          name: 'i-lucide-calendar',
+        }),
+        h(
+          'div',
+          {
+            class: 'flex flex-col',
+          },
+          [
+            h('p', { class: 'font-bold' }, BookingDate),
+            h('p', { class: 'text-xs' }, `${startDate} - ${endDate}`),
+          ],
+        ),
+      ])
+    },
+  },
+  {
+    accessorKey: 'id',
+    header: () => h('div', { class: 'text-right' }, 'Action'),
+    cell: ({ row }) => {
+      const id = row.original.id
+      return h('div', { class: 'flex items-center gap-2 justify-end' }, [
+        h(UButton, {
+          loading: deleting.value == id,
+          variant: 'outline',
+          color: 'neutral',
+          size: 'sm',
+          icon: 'i-lucide-edit',
+          onClick: () => handleDeleteBooking(id),
+        }),
+        h(UButton, {
+          loading: deleting.value == id,
+          variant: 'outline',
+          color: 'error',
+          size: 'sm',
+          icon: 'i-lucide-trash',
+          onClick: () => handleDeleteBooking(id),
+        }),
+      ])
     },
   },
 ]
+
+const overlay = useOverlay()
+const deleteModal = overlay.create(ConfirmationDialog)
+const handleDeleteBooking = (id: string) => {
+  deleteModal.open({
+    title: 'Delete Booking',
+    message: 'Are you sure you want to delete this booking?',
+    onOk: () => {
+      deleteBooking(id)
+    },
+  })
+}
+
+const toast = useToast()
+const deleting = ref<string>('')
+const deleteBooking = async (id: string) => {
+  deleting.value = id
+  try {
+    await bookingStore.deleteBooking(id)
+    toast.add({
+      title: 'Success',
+      description: 'Booking has been deleted.',
+      icon: 'i-lucide-check',
+      color: 'success',
+    })
+  } catch (error) {
+    const fetchError = error as FetchError<any>
+
+    toast.add({
+      title: 'Error',
+      description: fetchError.data?.message ?? fetchError.message ?? 'Something went wrong',
+      icon: 'i-lucide-octagon-x',
+      color: 'error',
+    })
+  } finally {
+    deleting.value = ''
+  }
+}
 </script>

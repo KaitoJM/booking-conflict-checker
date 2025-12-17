@@ -11,8 +11,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BookingFilter: typeof import('./src/components/BookingFilter.vue')['default']
     BookingForm: typeof import('./src/components/BookingForm.vue')['default']
     BookingHistory: typeof import('./src/components/BookingHistory.vue')['default']
+    ConfirmationDialog: typeof import('./src/components/ConfirmationDialog.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
@@ -28,6 +30,8 @@ declare module 'vue' {
     UBadge: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Badge.vue')['default']
     UButton: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Button.vue')['default']
     UCalendar: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Calendar.vue')['default']
+    UEmpty: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Empty.vue')['default']
+    UFieldGroup: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/FieldGroup.vue')['default']
     UFooter: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Footer.vue')['default']
     UForm: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Form.vue')['default']
     UFormField: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/FormField.vue')['default']
@@ -37,6 +41,7 @@ declare module 'vue' {
     UInputDate: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/InputDate.vue')['default']
     UInputTime: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/InputTime.vue')['default']
     UMain: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Main.vue')['default']
+    UModal: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Modal.vue')['default']
     UPage: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Page.vue')['default']
     UPageAside: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/PageAside.vue')['default']
     UPageBody: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/PageBody.vue')['default']
@@ -45,6 +50,7 @@ declare module 'vue' {
     UPopover: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
     USeparator: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Separator.vue')['default']
     UTable: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Table.vue')['default']
+    UTextarea: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
     UUser: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/User.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }

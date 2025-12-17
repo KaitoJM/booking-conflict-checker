@@ -1,9 +1,12 @@
 <template>
-  <p class="font-bold text-sm mb-2 text-neutral-400">Create Booking</p>
+  <p class="font-bold text-sm mb-4 text-neutral-400">Create Booking</p>
   <UForm
     @submit.prevent="handleSubmit"
     class="border border-accented rounded-lg p-4 flex flex-col gap-2"
   >
+    <UFormField label="Booking Description">
+      <UTextarea v-model="description" @click="editing = true" class="w-full" />
+    </UFormField>
     <UFormField label="Book date">
       <UInputDate class="w-full" ref="inputDate" v-model="date" @click="editing = true">
         <template #trailing>
@@ -24,12 +27,14 @@
         </template>
       </UInputDate>
     </UFormField>
-    <UFormField label="Start time">
-      <UInputTime v-model="start_time" @click="editing = true" />
-    </UFormField>
-    <UFormField label="End time">
-      <UInputTime v-model="end_time" @click="editing = true" />
-    </UFormField>
+    <div class="flex gap-4">
+      <UFormField label="Start time">
+        <UInputTime v-model="start_time" @click="editing = true" />
+      </UFormField>
+      <UFormField label="End time">
+        <UInputTime v-model="end_time" @click="editing = true" />
+      </UFormField>
+    </div>
     <UAlert
       v-if="isAvailable && !editing"
       title="Available"
@@ -152,6 +157,7 @@ const isAvailable = computed<boolean>(() => {
   )
 })
 
+const description = ref<string>('')
 const date = shallowRef(today(getLocalTimeZone()))
 const start_time = ref<string>('')
 const end_time = ref<string>('')
@@ -186,7 +192,12 @@ const handleSubmit = async () => {
     const startTimeToString = start_time.value.toString()
     const endTimeToString = end_time.value.toString()
 
-    await bookingStore.createBooking(dateToString, startTimeToString, endTimeToString)
+    await bookingStore.createBooking(
+      description.value,
+      dateToString,
+      startTimeToString,
+      endTimeToString,
+    )
     toast.add({
       title: 'Booked!',
       description: 'Your booking has been confirmed.',
