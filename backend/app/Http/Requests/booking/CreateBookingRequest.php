@@ -23,8 +23,8 @@ class CreateBookingRequest extends FormRequest
     {
         return [
             'date' => 'required|date',
-            'start_time' => 'required|time',
-            'end_time' => 'required|time',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
         ];
     }
 }

@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\booking\CreateBookingRequest;
 use App\Http\Requests\booking\GetBookingRequest;
+use App\Http\Requests\booking\UpdateBookingRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\UserResource;
 use App\Services\BookingService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BookingController extends Controller
 {
@@ -24,9 +27,11 @@ class BookingController extends Controller
      */
     public function index(GetBookingRequest $request)
     {
+        $user = Auth::user();
+
         $bookings = $this->booking_service->getBookings(
             $request->query('search'),
-            $request->query('user_id')
+            $user->role == 'admin' ? null : $user->id
         );
 
         return BookingResource::collection($bookings);
@@ -37,8 +42,10 @@ class BookingController extends Controller
      */
     public function store(CreateBookingRequest $request)
     {
+        $user = Auth::user();
+
         $booking = $this->booking_service->createBooking(
-            $request->user_id,
+            $user->id,
             $request->date,
             $request->start_time,
             $request->end_time
@@ -56,18 +63,22 @@ class BookingController extends Controller
     {
         try {
             $booking = $this->booking_service->getBooking($id);
+            Gate::authorize('view', $booking);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Booking not found'], 404);
         }
 
-        return response()->json(new UserResource($booking));
+        return response()->json(new BookingResource($booking));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBookingRequest $request, string $id)
     {
+        $booking = $this->booking_service->getBooking($id);
+        Gate::authorize('update', $booking);
+
         try {
             $booking = $this->booking_service->updateBooking(
                 $id,
@@ -86,6 +97,9 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
+        $booking = $this->booking_service->getBooking($id);
+        Gate::authorize('delete', $booking);
+
         try {
             $this->booking_service->deleteBooking($id);
         } catch (ModelNotFoundException $e) {

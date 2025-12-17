@@ -21,7 +21,6 @@ class BookingService {
         $created = Booking::create([
             'user_id' => $user_id,
             'date' => $date,
-            'date' => $date,
             'start_time' => $start_time,
             'end_time' => $end_time,
         ]);
