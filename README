@@ -1,0 +1,184 @@
+# Booking Conflict Checker – Full-Stack Laravel & Vue Skills Test
+
+A full-stack web application built with **Vue.js** for the frontend and **Laravel 12** for the backend.  
+This repository follows a monorepo structure containing both frontend and backend applications.
+
+```bash
+.
+├── frontend/        # Vue.js application
+├── backend/         # Laravel 12 API
+└── README.md
+```
+
+## Tech Stack
+
+Frontend
+
+- VueJS (Composition API)
+- Vite
+- TypeScript
+- TailwindCSS
+- Pinia
+- Fetch for API Calls
+- Nuxt UI for UI components
+
+Backend
+
+- Laravel 12
+- PHP 8.2+
+- MySQL
+- Eloquent ORM
+- Laravel Scheduler
+- Laravel Sanctum / JWT
+
+## Requirements
+
+Make sure you have the following installed:
+
+- Node.js 24+ / Latest Stable
+- npm
+- PHP 8.2+
+- Composer
+- MySQL or PostgreSQL
+- Docker (optional, if using Sail)
+
+## Frontend Setup (Vue.js)
+
+- Make sure to edit the .env file for the VITE_API_URL value
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will be available at:
+
+```bash
+http://localhost:5173
+```
+
+Environment Variables
+
+- Create a .env file in frontend/:
+
+```bash
+VITE_API_URL=http://localhost:8000/api
+```
+
+## Backend Setup (Laravel 12)
+
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+Configure Database
+
+- Update .env:
+
+```bash
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+Run migrations:
+
+```bash
+php artisan migrate
+```
+
+Start the backend server:
+
+```bash
+php artisan serve
+```
+
+The API will be available at:
+
+```bash
+http://localhost:8000
+```
+
+Scheduled Tasks
+
+- This project uses Laravel’s scheduler for background tasks.
+- Scheduling is defined in:
+
+```bash
+routes/console.php
+```
+
+- To enable the scheduler, add this cron job on the server:
+
+```bash
+* * * * * php /path-to-project/backend/artisan schedule:run >> /dev/null 2>&1
+```
+
+Testing
+
+```bash
+cd backend
+php artisan test
+```
+
+Authentication
+
+- Authentication is handled on the backend
+- Frontend communicates via API tokens (Bearer token)
+- Protected routes require authentication
+
+API Communication
+
+- Frontend consumes the backend REST API
+- All API endpoints are prefixed with `/api`
+
+## My thought process
+
+- I handled the Booking Conflict checks with the use of "Check Availability" button, I hid the the submit button to create the booking and will show it when check availability is done and have no conflicts and Overlaps in result.
+- On the backend, business rules are isolated from controllers to keep them thin and focused on request handling.
+- On the frontend, reusable composables are used to encapsulate API logic and complex state-related behavior.
+
+## Coding Decisions
+
+### Backend
+
+    - Adopted a **Service / Repository pattern** to separate database access from business logic
+    - Controllers are kept lightweight and delegate logic to services
+    - Used Eloquent query scopes and conditional queries for flexible filtering
+    - Implemented request validation to ensure API consistency
+    - Leveraged Laravel Scheduler for background and maintenance tasks
+    - Make use of Pest for feature testing
+
+### Frontend
+
+- Used **Vue 3 Composition API** for better logic reuse and clarity
+- Implemented composables for API interactions instead of overusing global state
+- Avoided unnecessary state storage in Pinia when data is short-lived
+- Used environment-based API configuration for flexibility across environments
+
+---
+
+## ✅ Implemented Features
+
+- User authentication and authorization
+- Booking creation with date and time validation
+- Booking availability and conflict detection
+- Detection of overlapping bookings
+- Gap analysis between bookings
+- Sorted booking listings by date and start time
+- Secure API communication using Bearer tokens
+- Backend validation and error handling
+- Frontend error handling with user-friendly feedback
+- Scheduled cleanup of old booking records
+
+---
+
+## 🚀 Added Improvements
+
+- Introduced a **booking availability analyzer** to prevent invalid bookings
+- Improved UI feedback for booking conflicts and overlaps
+- Centralized API logic using composables for better reuse
