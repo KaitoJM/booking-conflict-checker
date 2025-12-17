@@ -12,6 +12,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AdminBookingFilter: typeof import('./src/components/admin/AdminBookingFilter.vue')['default']
+    AdminUserFilter: typeof import('./src/components/admin/AdminUserFilter.vue')['default']
     BookingFilter: typeof import('./src/components/BookingFilter.vue')['default']
     BookingForm: typeof import('./src/components/BookingForm.vue')['default']
     BookingHistory: typeof import('./src/components/BookingHistory.vue')['default']

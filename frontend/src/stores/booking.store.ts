@@ -24,7 +24,7 @@ export const useBookingStore = defineStore('bookingStore', () => {
       const err = error as FetchError<any>
 
       throw {
-        message: err.data?.message ?? 'Booking creation failed',
+        message: err.data?.message ?? 'Booking retrieval failed',
         errors: err.data?.errors,
         statusCode: err.status,
       } as ApiError
