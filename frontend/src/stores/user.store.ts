@@ -9,15 +9,11 @@ export const useUserStore = defineStore('userStore', () => {
   const users = ref<User[]>([])
   const authStore = useAuthStore()
 
-  const createUser = async (name: string, email: string, password: string) => {
+  const registerUser = async (name: string, email: string, password: string) => {
     try {
-      const res = await $fetch<ApiSuccess<User>>(`${import.meta.env.VITE_API_URL}/users`, {
+      const res = await $fetch<ApiSuccess<User>>(`${import.meta.env.VITE_API_URL}/register`, {
         method: 'POST',
         body: { name, email, password },
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-          Accept: 'application/json',
-        },
       })
       users.value.push(res.data)
     } catch (error) {
@@ -31,5 +27,5 @@ export const useUserStore = defineStore('userStore', () => {
     }
   }
 
-  return { users, createUser }
+  return { users, registerUser }
 })

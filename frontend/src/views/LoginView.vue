@@ -47,7 +47,11 @@ const handleSubmit = async () => {
   loading.value = true
   try {
     await authStore.login(email.value, password.value)
-    router.push({ name: 'home' })
+    if (authStore.user?.role == 'admin') {
+      router.push({ name: 'admin' })
+    } else {
+      router.push({ name: 'home' })
+    }
   } catch (error) {
     const fetchError = error as FetchError<any>
 

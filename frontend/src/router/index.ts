@@ -40,11 +40,10 @@ const router = createRouter({
     },
     {
       path: '/admin/',
-      name: 'dashboard',
       meta: { requiresAuth: true },
       component: AdminLayout,
       children: [
-        { path: '', component: HomeView },
+        { path: '', name: 'admin', component: HomeView },
         { path: 'bookings', component: HomeView },
       ],
     },

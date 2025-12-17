@@ -77,7 +77,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    await userStore.createUser(name.value, email.value, password.value)
+    await userStore.registerUser(name.value, email.value, password.value)
 
     toast.add({
       title: 'User successfully registered',
