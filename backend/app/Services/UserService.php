@@ -16,11 +16,12 @@ class UserService {
         return $users->get();
     }
 
-    public function createUser($name, $email, $password) {
+    public function createUser($name, $email, $password, ?string $role = 'user') {
         $created = User::create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
+            'role' => $role
         ]);
 
         return $created;
