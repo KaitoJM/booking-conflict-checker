@@ -22,7 +22,9 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'date' => 'required|date',
+            'start_time' => 'required|time',
+            'end_time' => 'required|time',
         ];
     }
 }

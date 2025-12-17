@@ -22,7 +22,8 @@ class GetUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'search' => 'nullable|string',
+            'user_id' => 'nullable|string'
         ];
     }
 }
