@@ -44,7 +44,7 @@
 <script setup lang="ts">
 import type { FetchError } from 'ofetch'
 import { useBookingStore } from '@/stores/booking.store'
-import { CalendarDate } from '@internationalized/date'
+import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js'
 import { ref, shallowRef, useTemplateRef } from 'vue'
 
@@ -52,7 +52,7 @@ const bookingStore = useBookingStore()
 const inputDate = useTemplateRef('inputDate')
 const toast = useToast()
 
-const date = shallowRef(new CalendarDate(2022, 1, 10))
+const date = shallowRef(today(getLocalTimeZone()))
 const start_time = ref<string>('')
 const end_time = ref<string>('')
 
