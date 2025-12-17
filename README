@@ -182,3 +182,7 @@ API Communication
 - Introduced a **booking availability analyzer** to prevent invalid bookings
 - Improved UI feedback for booking conflicts and overlaps
 - Centralized API logic using composables for better reuse
+
+### Author
+
+Developed by John Mark Mancol
