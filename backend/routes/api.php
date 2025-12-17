@@ -13,3 +13,4 @@ Route::post('/login', [AuthController::class, 'login']);
 // private routes
 Route::apiResource('/users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('/bookings', BookingController::class)->middleware('auth:sanctum');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
