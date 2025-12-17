@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class BookingService {
@@ -52,5 +53,10 @@ class BookingService {
         $booking->delete();
 
         return $booking;
+    }
+
+    public function deleteOlderThan(Carbon $date): int
+    {
+        return Booking::where('created_at', '<', $date)->delete();
     }
 }
