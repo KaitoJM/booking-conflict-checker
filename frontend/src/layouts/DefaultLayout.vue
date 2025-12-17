@@ -1,5 +1,9 @@
+<script setup lang="ts">
+import Header from '@/components/Header.vue'
+</script>
+
 <template>
-  <UHeader title="Booking Conflict Checker" />
+  <Header />
   <UMain class="p-4">
     <router-view />
   </UMain>

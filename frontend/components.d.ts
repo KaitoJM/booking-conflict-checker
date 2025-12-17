@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     BookingForm: typeof import('./src/components/BookingForm.vue')['default']
     BookingHistory: typeof import('./src/components/BookingHistory.vue')['default']
+    Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
@@ -43,6 +44,7 @@ declare module 'vue' {
     UPopover: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
     USeparator: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Separator.vue')['default']
     UTable: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/Table.vue')['default']
+    UUser: typeof import('./node_modules/@nuxt/ui/dist/runtime/components/User.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

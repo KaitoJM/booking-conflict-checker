@@ -11,8 +11,6 @@ import { useBookingStore } from '@/stores/booking.store'
 
 const bookingStore = useBookingStore()
 
-const UBadge = resolveComponent('UBadge')
-
 const data = computed<Booking[]>(() => bookingStore.bookings)
 
 onMounted(() => {

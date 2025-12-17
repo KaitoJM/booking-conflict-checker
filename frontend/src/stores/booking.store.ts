@@ -40,7 +40,7 @@ export const useBookingStore = defineStore('bookingStore', () => {
           Accept: 'application/json',
         },
       })
-      bookings.value.push(res.data)
+      getBookings()
     } catch (error) {
       const err = error as FetchError<any>
 
