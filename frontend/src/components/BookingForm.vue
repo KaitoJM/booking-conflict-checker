@@ -78,8 +78,11 @@
           <li
             v-for="(conflict, conflictKey) in bookingAvailablity.conflicts.value"
             :key="`conflict-item${conflictKey}-${conflict.id}`"
+            class="flex items-center gap-2"
           >
-            {{ conflict.date }} : {{ conflict.start_time }} - {{ conflict.end_time }}
+            <UIcon name="i-lucide-calendar-x" class="size-4" />
+            {{ conflict.date }} : {{ formatTime(conflict.start_time) }} -
+            {{ formatTime(conflict.end_time) }}
           </li>
         </ul>
       </template>
@@ -95,8 +98,11 @@
           <li
             v-for="(overlap, overlapKey) in bookingAvailablity.overlaps.value"
             :key="`overlap-item${overlapKey}-${overlap.id}`"
+            class="flex items-center gap-2"
           >
-            {{ overlap.date }} : {{ overlap.start_time }} - {{ overlap.end_time }}
+            <UIcon name="i-lucide-calendar-x" class="size-4" />
+            {{ overlap.date }} : {{ formatTime(overlap.start_time) }} -
+            {{ formatTime(overlap.end_time) }}
           </li>
         </ul>
       </template>
@@ -114,8 +120,10 @@
           <li
             v-for="(gap, gapKey) in bookingAvailablity.gaps.value"
             :key="`gap-item${gapKey}-${gap.start_time}`"
+            class="flex items-center gap-2"
           >
-            {{ gap.start_time }} - {{ gap.end_time }}
+            <UIcon name="i-lucide-clock" class="size-4" />
+            {{ formatTime(gap.start_time) }} - {{ formatTime(gap.end_time) }}
           </li>
         </ul>
       </template>
@@ -162,7 +170,7 @@ const handleCheckClick = async () => {
     toast.add({
       title: 'Error',
       description: fetchError.data?.message ?? fetchError.message ?? 'Something went wrong',
-      icon: 'i-lucide-octagon-x',
+      icon: 'i-lucide-check',
       color: 'error',
     })
   } finally {
@@ -198,5 +206,14 @@ const handleSubmit = async () => {
     loading.value = false
     editing.value = false
   }
+}
+
+function formatTime(time: string) {
+  const dateObj = new Date(`1970-01-01T${time}`)
+  return dateObj.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  })
 }
 </script>

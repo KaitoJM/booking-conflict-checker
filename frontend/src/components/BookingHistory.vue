@@ -36,10 +36,28 @@ const columns: TableColumn<Booking>[] = [
   {
     accessorKey: 'start_time',
     header: 'Start Time',
+    cell: ({ row }) => {
+      const time = row.getValue('start_time') // "HH:mm:ss"
+      const dateObj = new Date(`1970-01-01T${time}`) // combine with arbitrary date
+      return dateObj.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true, // this makes AM/PM
+      })
+    },
   },
   {
     accessorKey: 'end_time',
     header: 'End Time',
+    cell: ({ row }) => {
+      const time = row.getValue('end_time')
+      const dateObj = new Date(`1970-01-01T${time}`)
+      return dateObj.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      })
+    },
   },
 ]
 </script>
