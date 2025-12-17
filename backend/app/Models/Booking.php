@@ -16,4 +16,8 @@ class Booking extends Model
         'start_time',
         'end_time',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -15,6 +15,7 @@ class BookingService {
         })->when($search, function($query) use ($search) {
             $query->where('description', 'like', "%{$search}%");
         })
+        ->with('user')
         ->orderBy('date', 'asc')
         ->orderBy('start_time', 'asc');;
 
